@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10182b">
+<meta name="description" content="A fan-made Charlie Kirk themed clicker game. Tap, upgrade, and rebirth.">
+<title>Charlie Clicker 🇺🇸</title>
+<style>
+:root{--navy:#10182b;--navy2:#17243b;--red:#e13b4d;--blue:#3269d6;--gold:#ffd45a;--white:#f8fafc;--muted:#aebbd0;--glass:#ffffff0c;--line:#ffffff18}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--white);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 50% -20%,#304c78 0,transparent 48%),linear-gradient(145deg,var(--navy),#080d18 80%);background-attachment:fixed}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1060px;margin:auto;padding:22px 18px 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 2px 20px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.04em}
+.flag{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#d72d43,#214fbb);box-shadow:0 6px 22px #0003;font-size:22px}
+.brand small{display:block;color:var(--muted);font-weight:600;font-size:11px;letter-spacing:.14em;margin-top:3px}
+.pill{border:1px solid var(--line);background:#ffffff0a;color:#dce6f6;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800}
+.hero{text-align:center;padding:28px 0 18px}
+.kicker{display:inline-flex;align-items:center;gap:8px;color:#ffdf83;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(30px,6vw,56px);line-height:1.03;letter-spacing:-.045em;margin:12px 0}
+h1 span{background:linear-gradient(90deg,#fff,#f7c957);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro{max-width:550px;margin:0 auto;color:var(--muted);font-size:14px;line-height:1.6}
+.layout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:18px;margin-top:22px}
+.panel{border:1px solid var(--line);background:linear-gradient(145deg,#ffffff0d,#ffffff04);border-radius:24px;box-shadow:0 20px 60px #0002;overflow:hidden}
+.play-panel{padding:24px;display:flex;flex-direction:column;align-items:center;min-height:480px}
+.balance-label{font-size:11px;letter-spacing:.16em;font-weight:900;color:var(--muted);text-transform:uppercase}
+.balance{font-size:clamp(35px,8vw,58px);font-weight:1000;letter-spacing:-.05em;color:var(--gold);margin:5px 0}
+.balance span{font-size:15px;letter-spacing:0;color:#d5ddec;font-weight:700}
+.stats{display:flex;gap:10px;width:100%;margin:10px 0 14px}
+.stat{flex:1;background:#ffffff08;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.stat label{display:block;color:var(--muted);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.12em}
+.stat strong{display:block;font-size:18px;margin-top:4px}
+.character{position:relative;width:min(62vw,250px);height:min(62vw,250px);max-width:250px;max-height:250px;display:grid;place-items:center;border-radius:50%;border:5px solid #f8d76a;background:radial-gradient(circle at 34% 23%,#fff4db,#e5b98f 35%,#8b4b37 76%,#3b2020);box-shadow:0 0 0 9px #ffd45a12,0 18px 45px #0005;user-select:none;touch-action:manipulation;transition:transform .09s;outline:none}
+.character:before{content:"";position:absolute;inset:9px;border:1px solid #fff6;border-radius:50%}
+.character:active{transform:scale(.96)}
+.character .emoji{font-size:clamp(72px,19vw,116px);filter:drop-shadow(0 8px 5px #0003)}
+.tap-hint{font-size:12px;color:var(--muted);margin:15px 0 0}
+.click-pop{position:absolute;color:#fff;font-weight:1000;font-size:22px;pointer-events:none;animation:pop .7s ease-out forwards;text-shadow:0 2px 8px #0008}
+@keyframes pop{from{opacity:1;transform:translateY(0) scale(.8)}to{opacity:0;transform:translateY(-70px) scale(1.3)}}
+.side{display:flex;flex-direction:column;gap:14px}
+.side .panel{padding:18px}
+.panel-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.panel-title h2{font-size:15px;margin:0;font-weight:950}
+.panel-title small{color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
+.shop-item{display:flex;align-items:center;gap:11px;border:1px solid var(--line);background:#ffffff07;border-radius:15px;padding:12px;margin-top:9px}
+.item-icon{flex:0 0 42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#ffffff12;font-size:21px}
+.item-info{flex:1;min-width:0}
+.item-info strong{display:block;font-size:13px}
+.item-info small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.buy{border:0;border-radius:11px;padding:10px 11px;color:#fff;font-size:11px;font-weight:950;background:var(--red);min-width:78px}
+.buy.blue{background:var(--blue)}.buy:disabled{opacity:.35;cursor:not-allowed}
+.rebirth{width:100%;margin-top:12px;border:1px solid #ffd45a44;border-radius:14px;padding:13px;background:linear-gradient(135deg,#ffd45a20,#e13b4d15);color:#ffe38a;font-weight:950}
+footer{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:20px;color:#8190a8;font-size:11px;flex-wrap:wrap}
+.footer-actions{display:flex;gap:8px}
+.ghost{border:1px solid var(--line);background:#ffffff08;color:#cbd5e1;border-radius:10px;padding:8px 10px;font-size:11px;font-weight:800}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);padding:12px 16px;background:#f8fafc;color:#142039;border-radius:12px;box-shadow:0 12px 35px #0005;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:5}
+.toast.show{opacity:1}
+@media(max-width:720px){.wrap{padding:14px 12px 28px}.layout{grid-template-columns:1fr}.play-panel{min-height:0;padding:20px}.side{display:grid;grid-template-columns:1fr}.hero{padding-top:24px}.intro{font-size:13px}header{padding-bottom:15px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="brand"><div class="flag">🇺🇸</div><div>CHARLIE CLICKER<small>FAN-MADE CLICKER GAME</small></div></div>
+ <div class="pill" id="rebirthBadge">🏆 REBIRTH 0</div>
+</header>
+<section class="hero">
+ <div class="kicker">★ Tap • Upgrade • Repeat ★</div>
+ <h1>Make every tap <span>count.</span></h1>
+ <p class="intro">Tap the character to earn clicks, unlock upgrades, and build your click empire. A fan-made game for fun.</p>
+</section>
+<section class="layout">
+ <div class="panel play-panel">
+  <div class="balance-label">Your total clicks</div>
+  <div class="balance" id="balance">0 <span>clicks</span></div>
+  <div class="stats">
+   <div class="stat"><label>Per tap</label><strong id="power">1</strong></div>
+   <div class="stat"><label>Auto / sec</label><strong id="auto">0</strong></div>
+   <div class="stat"><label>Multiplier</label><strong id="mult">x1</strong></div>
+  </div>
+  <button class="character" id="tap" aria-label="Tap character to earn clicks"><span class="emoji">🙂</span></button>
+  <div class="tap-hint">TAP THE CHARACTER TO EARN CLICKS</div>
+ </div>
+ <aside class="side">
+  <div class="panel">
+   <div class="panel-title"><h2>⚡ Upgrade shop</h2><small>POWER UP</small></div>
+   <div class="shop-item"><div class="item-icon">👆</div><div class="item-info"><strong>Stronger taps</strong><small id="upgradeDesc">+1 click per tap</small></div><button class="buy" id="upgrade">25</button></div>
+   <div class="shop-item"><div class="item-icon">🤖</div><div class="item-info"><strong>Auto clicker</strong><small>Earn clicks every second</small></div><button class="buy blue" id="autobuy">100</button></div>
+   <button class="rebirth" id="rebirth">🏆 Rebirth · 10,000 clicks</button>
+  </div>
+  <div class="panel">
+   <div class="panel-title"><h2>📊 Your progress</h2><small>LOCAL SAVE</small></div>
+   <div class="shop-item"><div class="item-icon">🖱️</div><div class="item-info"><strong>Total taps</strong><small>Lifetime taps made</small></div><strong id="totalTaps">0</strong></div>
+   <div class="shop-item"><div class="item-icon">🏅</div><div class="item-info"><strong>Rebirths</strong><small>Permanent multiplier</small></div><strong id="rebirths">0</strong></div>
+   <button class="ghost" id="save" style="width:100%;margin-top:12px">💾 Save progress</button>
+  </div>
+ </aside>
+</section>
+<footer><span>Fan-made clicker • Progress saved in this browser</span><div class="footer-actions"><button class="ghost" id="reset">Reset game</button></div></footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const $=id=>document.getElementById(id);
+const initial=()=>({clicks:0,power:1,upgradeCost:25,auto:0,autoCost:100,rebirths:0,totalTaps:0});
+let game=initial(),toastTimer;
+function fmt(n){return Math.floor(n).toLocaleString('en-US')}
+function multiplier(){return game.rebirths+1}
+function render(){
+ $('balance').innerHTML=fmt(game.clicks)+' <span>clicks</span>';
+ $('power').textContent=fmt(game.power);$('auto').textContent=fmt(game.auto);$('mult').textContent='x'+multiplier();
+ $('upgrade').textContent=fmt(game.upgradeCost);$('autobuy').textContent=fmt(game.autoCost);
+ $('upgrade').disabled=game.clicks<game.upgradeCost;$('autobuy').disabled=game.clicks<game.autoCost;
+ $('upgradeDesc').textContent='+'+game.power+' click per tap';
+ const rebirthCost=10000*multiplier();
+ $('rebirth').textContent='🏆 Rebirth · '+fmt(rebirthCost)+' clicks';
+ $('rebirth').disabled=game.clicks<rebirthCost;
+ $('rebirthBadge').textContent='🏆 REBIRTH '+game.rebirths;
+ $('totalTaps').textContent=fmt(game.totalTaps);$('rebirths').textContent=fmt(game.rebirths);
+}
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),1900)}
+function save(silent=false){try{localStorage.setItem('charlie-clicker-save-v1',JSON.stringify(game));if(!silent)toast('Progress saved on this device!')}catch(e){if(!silent)toast('Could not save in this browser.')}}
+function pop(amount){const el=document.createElement('span');el.className='click-pop';el.textContent='+'+fmt(amount);el.style.left=(20+Math.random()*60)+'%';el.style.top='40%';$('tap').appendChild(el);setTimeout(()=>el.remove(),720)}
+$('tap').addEventListener('click',()=>{const amount=game.power*multiplier();game.clicks+=amount;game.totalTaps++;pop(amount);render()});
+$('upgrade').onclick=()=>{if(game.clicks>=game.upgradeCost){game.clicks-=game.upgradeCost;game.power++;game.upgradeCost=Math.ceil(game.upgradeCost*1.6);render()}};
+$('autobuy').onclick=()=>{if(game.clicks>=game.autoCost){game.clicks-=game.autoCost;game.auto++;game.autoCost=Math.ceil(game.autoCost*1.8);render()}};
+$('rebirth').onclick=()=>{const cost=10000*multiplier();if(game.clicks>=cost){game.clicks=0;game.power=1;game.upgradeCost=25;game.auto=0;game.autoCost=100;game.rebirths++;save(true);render();toast('Rebirth unlocked! Multiplier increased.')}};
+$('save').onclick=()=>save();
+$('reset').onclick=()=>{if(confirm('Reset all your clicker progress?')){game=initial();localStorage.removeItem('charlie-clicker-save-v1');render();toast('Game reset.')}};
+try{const saved=localStorage.getItem('charlie-clicker-save-v1');if(saved)game={...initial(),...JSON.parse(saved)}}catch(e){}
+setInterval(()=>{if(game.auto){game.clicks+=game.auto*game.power*multiplier();render()}},1000);
+render();
+</script>
+</body></html>
